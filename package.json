@@ -1,0 +1,30 @@
+{
+  "name": "video",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion render AEOEnginePromo out/aeoengine-promo.mp4",
+    "render": "remotion render AEOEnginePromo out/aeoengine-promo.mp4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:16191/git/vijworks/video"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/bundler": "^4.0.407",
+    "@remotion/cli": "^4.0.407",
+    "@remotion/tailwind": "^4.0.407",
+    "@types/react": "^19.2.9",
+    "playwright-core": "^1.57.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "remotion": "^4.0.407",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  }
+}
