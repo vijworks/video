@@ -44,7 +44,7 @@ export const Master: React.FC = () => {
   );
 
   return (
-    <AbsoluteFill className="bg-gradient-to-br from-slate-50 to-slate-100">
+    <AbsoluteFill style={{ background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)" }}>
       {/* ACT 1: The Problem (0-3.5s) */}
       <Sequence durationInFrames={act1Frames + Math.round(fps * 0.5)}>
         <AbsoluteFill style={{ opacity: 1 - act1ToAct2Fade * 0.8 }}>

@@ -4,7 +4,6 @@ import {
   useVideoConfig,
   interpolate,
   spring,
-  Easing,
 } from "remotion";
 
 const CHECKMARKS = [
@@ -36,15 +35,31 @@ const Checkmark: React.FC<{ text: string; delay: number }> = ({ text, delay }) =
 
   return (
     <div
-      className="flex items-center gap-2 text-sm"
-      style={{ opacity, transform: `scale(${interpolate(scale, [0, 1], [0.8, 1])})` }}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        fontSize: 14,
+        opacity,
+        transform: `scale(${interpolate(scale, [0, 1], [0.8, 1])})`,
+      }}
     >
-      <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center">
-        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div
+        style={{
+          width: 20,
+          height: 20,
+          borderRadius: 10,
+          backgroundColor: "#10b981",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <svg width="12" height="12" fill="none" stroke="white" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
         </svg>
       </div>
-      <span className="text-emerald-600 font-medium">{text}</span>
+      <span style={{ color: "#059669", fontWeight: 500 }}>{text}</span>
     </div>
   );
 };
@@ -67,7 +82,7 @@ export const AIInterface: React.FC = () => {
   });
 
   // Typing animation for prompt
-  const promptText = 'What\'s the best project management tool for teams?';
+  const promptText = "What's the best project management tool for teams?";
   const promptStartFrame = fps * 0.5;
   const charsPerSecond = 25;
   const framesPerChar = fps / charsPerSecond;
@@ -96,28 +111,8 @@ export const AIInterface: React.FC = () => {
     )
   );
 
-  // Calculate which part of response to show
-  let displayedResponse = "";
-  let showBrandGlow = false;
-  let brandFullyRevealed = false;
-
-  if (responseChars > 0) {
-    if (responseChars <= responsePart1.length) {
-      displayedResponse = responsePart1.slice(0, responseChars);
-    } else if (responseChars <= responsePart1.length + brandName.length) {
-      displayedResponse = responsePart1;
-      const brandChars = responseChars - responsePart1.length;
-      displayedResponse += brandName.slice(0, brandChars);
-      showBrandGlow = true;
-      brandFullyRevealed = brandChars >= brandName.length;
-    } else {
-      displayedResponse = responsePart1 + brandName + responsePart2.slice(0, responseChars - responsePart1.length - brandName.length);
-      showBrandGlow = true;
-      brandFullyRevealed = true;
-    }
-  }
-
   // The "chosen moment" glow effect
+  const brandFullyRevealed = responseChars > responsePart1.length + brandName.length;
   const glowIntensity = brandFullyRevealed
     ? interpolate(
         frame,
@@ -129,46 +124,106 @@ export const AIInterface: React.FC = () => {
     : 0;
 
   return (
-    <AbsoluteFill className="flex items-center justify-center p-16">
+    <AbsoluteFill
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 64,
+      }}
+    >
       <div
-        className="w-full max-w-2xl"
         style={{
+          width: "100%",
+          maxWidth: 672,
           opacity,
           transform: `translateY(${translateY}px)`,
+          position: "relative",
         }}
       >
         {/* Glassmorphism chat container */}
         <div
-          className="rounded-3xl p-6 shadow-2xl"
           style={{
-            background: "rgba(255, 255, 255, 0.85)",
+            borderRadius: 24,
+            padding: 24,
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
+            background: "rgba(255, 255, 255, 0.9)",
             backdropFilter: "blur(20px)",
             border: "1px solid rgba(255, 255, 255, 0.5)",
           }}
         >
           {/* Header */}
-          <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-100">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              marginBottom: 20,
+              paddingBottom: 16,
+              borderBottom: "1px solid #f3f4f6",
+            }}
+          >
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                background: "linear-gradient(135deg, #34d399 0%, #14b8a6 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <svg width="24" height="24" fill="none" stroke="white" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
             <div>
-              <div className="font-semibold text-gray-800">AI Assistant</div>
-              <div className="text-xs text-emerald-500">Powered by AEO Engine</div>
+              <div style={{ fontWeight: 600, color: "#1f2937" }}>AI Assistant</div>
+              <div style={{ fontSize: 12, color: "#10b981" }}>Powered by AEO Engine</div>
             </div>
           </div>
 
           {/* User prompt */}
-          <div className="mb-4">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-sm font-semibold">
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                  background: "linear-gradient(135deg, #60a5fa 0%, #6366f1 100%)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "white",
+                  fontSize: 14,
+                  fontWeight: 600,
+                }}
+              >
                 U
               </div>
-              <div className="flex-1 bg-gray-50 rounded-2xl rounded-tl-sm px-4 py-3">
-                <span className="text-gray-700">{displayedPrompt}</span>
+              <div
+                style={{
+                  flex: 1,
+                  backgroundColor: "#f9fafb",
+                  borderRadius: 16,
+                  borderTopLeftRadius: 4,
+                  padding: "12px 16px",
+                }}
+              >
+                <span style={{ color: "#374151" }}>{displayedPrompt}</span>
                 {promptChars < promptText.length && (
-                  <span className="inline-block w-0.5 h-4 bg-gray-400 ml-0.5 animate-pulse" />
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 2,
+                      height: 16,
+                      backgroundColor: "#9ca3af",
+                      marginLeft: 2,
+                      animation: "pulse 1s infinite",
+                    }}
+                  />
                 )}
               </div>
             </div>
@@ -176,16 +231,32 @@ export const AIInterface: React.FC = () => {
 
           {/* AI Response */}
           {responseChars > 0 && (
-            <div className="mb-4">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
+                    background: "linear-gradient(135deg, #34d399 0%, #14b8a6 100%)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <svg width="16" height="16" fill="white" viewBox="0 0 24 24">
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                   </svg>
                 </div>
                 <div
-                  className="flex-1 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl rounded-tl-sm px-4 py-3 relative overflow-hidden"
                   style={{
+                    flex: 1,
+                    background: "linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%)",
+                    borderRadius: 16,
+                    borderTopLeftRadius: 4,
+                    padding: "12px 16px",
+                    position: "relative",
+                    overflow: "hidden",
                     boxShadow: glowIntensity > 0
                       ? `0 0 ${30 * glowIntensity}px rgba(16, 185, 129, ${0.4 * glowIntensity})`
                       : "none",
@@ -194,25 +265,26 @@ export const AIInterface: React.FC = () => {
                   {/* Glow pulse effect */}
                   {glowIntensity > 0 && (
                     <div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-200/50 to-transparent"
                       style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: "linear-gradient(to right, transparent, rgba(167, 243, 208, 0.5), transparent)",
                         opacity: glowIntensity * 0.5,
                         transform: `translateX(${Math.sin(frame * 0.1) * 20}%)`,
                       }}
                     />
                   )}
 
-                  <span className="text-gray-700 relative z-10">
+                  <span style={{ color: "#374151", position: "relative", zIndex: 10 }}>
                     {responsePart1.slice(0, Math.min(responseChars, responsePart1.length))}
                     {responseChars > responsePart1.length && (
                       <span
-                        className="font-bold relative"
                         style={{
+                          fontWeight: 700,
                           background: "linear-gradient(135deg, #10b981 0%, #0d9488 100%)",
                           WebkitBackgroundClip: "text",
                           WebkitTextFillColor: "transparent",
                           backgroundClip: "text",
-                          textShadow: glowIntensity > 0 ? `0 0 ${20 * glowIntensity}px rgba(16, 185, 129, 0.8)` : "none",
                         }}
                       >
                         {brandName.slice(0, Math.min(responseChars - responsePart1.length, brandName.length))}
@@ -228,7 +300,17 @@ export const AIInterface: React.FC = () => {
         </div>
 
         {/* Floating checkmarks */}
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 space-y-3">
+        <div
+          style={{
+            position: "absolute",
+            right: -180,
+            top: "50%",
+            transform: "translateY(-50%)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+          }}
+        >
           {CHECKMARKS.map((item, i) => (
             <Checkmark key={i} text={item.text} delay={item.delay} />
           ))}

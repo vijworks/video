@@ -4,7 +4,6 @@ import {
   useVideoConfig,
   interpolate,
   spring,
-  Easing,
 } from "remotion";
 
 const PLATFORMS = [
@@ -73,11 +72,21 @@ export const BrandReveal: React.FC = () => {
   const shimmerOffset = (frame / fps) * 200;
 
   return (
-    <AbsoluteFill className="flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <AbsoluteFill
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%)",
+      }}
+    >
       {/* Subtle background pattern */}
       <div
-        className="absolute inset-0 opacity-5"
         style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0.05,
           backgroundImage: `radial-gradient(circle at 25% 25%, #667eea 1px, transparent 1px),
                            radial-gradient(circle at 75% 75%, #764ba2 1px, transparent 1px)`,
           backgroundSize: "50px 50px",
@@ -85,26 +94,28 @@ export const BrandReveal: React.FC = () => {
       />
 
       {/* Main content */}
-      <div className="relative z-10 text-center">
+      <div style={{ position: "relative", zIndex: 10, textAlign: "center" }}>
         {/* Headline */}
         <div
           style={{
             opacity: headlineOpacity,
             transform: `scale(${headlineScale})`,
+            marginBottom: 32,
           }}
-          className="mb-8"
         >
           <h1
-            className="font-black tracking-tight"
             style={{
               fontSize: 72,
+              fontWeight: 900,
+              letterSpacing: "-0.02em",
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%)",
               backgroundSize: "200% 200%",
               backgroundPosition: `${shimmerOffset}% 0%`,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
-              fontFamily: "system-ui, -apple-system, sans-serif",
+              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+              margin: 0,
             }}
           >
             Own the AI Answer.
@@ -113,48 +124,75 @@ export const BrandReveal: React.FC = () => {
 
         {/* Logo and brand name */}
         <div
-          className="flex items-center justify-center gap-5 mb-6"
           style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 20,
+            marginBottom: 24,
             opacity: logoOpacity,
             transform: `translateY(${logoY}px)`,
           }}
         >
           {/* Logo mark with holographic effect */}
           <div
-            className="relative w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden"
             style={{
+              position: "relative",
+              width: 80,
+              height: 80,
+              borderRadius: 16,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
               boxShadow: "0 20px 40px -10px rgba(102, 126, 234, 0.5)",
             }}
           >
             {/* Holographic shimmer */}
             <div
-              className="absolute inset-0 opacity-40"
               style={{
+                position: "absolute",
+                inset: 0,
+                opacity: 0.4,
                 background: `linear-gradient(${45 + shimmerOffset * 0.5}deg,
                   transparent 30%,
                   rgba(255,255,255,0.8) 50%,
                   transparent 70%)`,
               }}
             />
-            <span className="text-white text-4xl font-bold relative z-10">A</span>
+            <span
+              style={{
+                color: "white",
+                fontSize: 36,
+                fontWeight: 700,
+                position: "relative",
+                zIndex: 10,
+                fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+              }}
+            >
+              A
+            </span>
           </div>
 
-          <div className="text-left">
+          <div style={{ textAlign: "left" }}>
             <div
-              className="font-bold text-gray-900"
               style={{
                 fontSize: 42,
-                fontFamily: "system-ui, -apple-system, sans-serif",
+                fontWeight: 700,
+                color: "#1f2937",
+                fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+                lineHeight: 1.1,
               }}
             >
               AEOEngine
             </div>
             <div
-              className="text-gray-500 font-medium"
               style={{
                 fontSize: 16,
-                fontFamily: "system-ui, -apple-system, sans-serif",
+                fontWeight: 500,
+                color: "#6b7280",
+                fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
               }}
             >
               .ai
@@ -163,21 +201,30 @@ export const BrandReveal: React.FC = () => {
         </div>
 
         {/* Tagline */}
-        <div
-          className="mb-8"
-          style={{ opacity: taglineOpacity }}
-        >
+        <div style={{ marginBottom: 32, opacity: taglineOpacity }}>
           <p
-            className="text-xl text-gray-600"
-            style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+            style={{
+              fontSize: 20,
+              color: "#4b5563",
+              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+              margin: 0,
+            }}
           >
             AI-Powered SEO That Makes You the{" "}
-            <span className="font-semibold text-gray-800">Trusted Source</span>
+            <span style={{ fontWeight: 600, color: "#1f2937" }}>Trusted Source</span>
           </p>
         </div>
 
         {/* Platform badges */}
-        <div className="flex items-center justify-center gap-3 mb-10">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 12,
+            marginBottom: 40,
+          }}
+        >
           {PLATFORMS.map((platform, i) => {
             const badgeDelay = badgesDelay + i * 4;
             const badgeSpring = spring({
@@ -197,13 +244,17 @@ export const BrandReveal: React.FC = () => {
             return (
               <div
                 key={i}
-                className="px-4 py-2 rounded-full text-sm font-medium"
                 style={{
+                  padding: "8px 16px",
+                  borderRadius: 9999,
+                  fontSize: 14,
+                  fontWeight: 500,
                   opacity: badgeOpacity,
                   transform: `translateY(${badgeY}px)`,
-                  backgroundColor: `${platform.color}15`,
+                  backgroundColor: `${platform.color}20`,
                   color: platform.color,
-                  border: `1px solid ${platform.color}30`,
+                  border: `1px solid ${platform.color}40`,
+                  fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
                 }}
               >
                 {platform.name}
@@ -213,19 +264,18 @@ export const BrandReveal: React.FC = () => {
         </div>
 
         {/* CTA Section */}
-        <div
-          className="space-y-4"
-          style={{ opacity: ctaOpacity }}
-        >
+        <div style={{ opacity: ctaOpacity }}>
           {/* URL */}
-          <div>
+          <div style={{ marginBottom: 16 }}>
             <span
-              className="text-2xl font-semibold"
               style={{
+                fontSize: 24,
+                fontWeight: 600,
                 background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
+                fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
               }}
             >
               aeoengine.ai
@@ -233,12 +283,17 @@ export const BrandReveal: React.FC = () => {
           </div>
 
           {/* CTA Button */}
-          <div className="inline-flex items-center gap-2">
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
             <div
-              className="px-6 py-3 rounded-full text-white font-semibold text-lg shadow-lg"
               style={{
+                padding: "12px 24px",
+                borderRadius: 9999,
+                color: "white",
+                fontWeight: 600,
+                fontSize: 18,
                 background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                 boxShadow: "0 10px 30px -5px rgba(102, 126, 234, 0.5)",
+                fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
               }}
             >
               Book Your Free Audit
@@ -246,7 +301,14 @@ export const BrandReveal: React.FC = () => {
           </div>
 
           {/* Trust signal */}
-          <div className="text-sm text-gray-400 mt-4">
+          <div
+            style={{
+              fontSize: 14,
+              color: "#9ca3af",
+              marginTop: 16,
+              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+            }}
+          >
             Trusted by 50+ leading brands
           </div>
         </div>

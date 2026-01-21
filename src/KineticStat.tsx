@@ -4,7 +4,6 @@ import {
   useVideoConfig,
   interpolate,
   spring,
-  Easing,
 } from "remotion";
 
 export const KineticStat: React.FC = () => {
@@ -61,10 +60,17 @@ export const KineticStat: React.FC = () => {
   if (frame < startFrame) return null;
 
   return (
-    <AbsoluteFill className="flex items-center justify-center pointer-events-none">
+    <AbsoluteFill
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        pointerEvents: "none",
+      }}
+    >
       <div
-        className="text-center"
         style={{
+          textAlign: "center",
           transform: `translate(${shakeX}px, ${shakeY}px)`,
         }}
       >
@@ -76,15 +82,14 @@ export const KineticStat: React.FC = () => {
           }}
         >
           <span
-            className="font-black"
             style={{
               fontSize: 140,
+              fontWeight: 900,
               background: "linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
-              textShadow: "0 0 80px rgba(244, 63, 94, 0.4)",
-              fontFamily: "system-ui, -apple-system, sans-serif",
+              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
             }}
           >
             60%
@@ -92,16 +97,17 @@ export const KineticStat: React.FC = () => {
         </div>
 
         {/* Supporting text */}
-        <div
-          style={{ opacity: textOpacity }}
-          className="mt-2"
-        >
+        <div style={{ opacity: textOpacity, marginTop: 8 }}>
           <span
-            className="text-2xl font-medium text-slate-600"
-            style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+            style={{
+              fontSize: 24,
+              fontWeight: 500,
+              color: "#475569",
+              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+            }}
           >
             of searches{" "}
-            <span className="text-slate-800 font-semibold">never click a link</span>{" "}
+            <span style={{ color: "#1e293b", fontWeight: 600 }}>never click a link</span>{" "}
             anymore.
           </span>
         </div>
