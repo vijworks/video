@@ -17,7 +17,7 @@ const ACT1_DURATION = 4;      // The Shift: Split screen old vs new
 const ACT2_DURATION = 5;      // The Stats: All 4 stats showcase
 const ACT3_DURATION = 5;      // Platform in Action: Notifications
 const ACT4_DURATION = 3;      // Dashboard Reveal
-const ACT5_DURATION = 1;      // Brand & CTA (starts early with overlap)
+const ACT5_DURATION = 5;      // Brand & CTA (extended for visibility)
 
 export const Master: React.FC = () => {
   const frame = useCurrentFrame();

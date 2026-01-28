@@ -66,9 +66,6 @@ export const BrandReveal: React.FC = () => {
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  // Subtle shimmer effect
-  const shimmerOffset = (frame / fps) * 100;
-
   return (
     <AbsoluteFill
       style={{
@@ -121,70 +118,37 @@ export const BrandReveal: React.FC = () => {
           </h1>
         </div>
 
-        {/* Logo and brand name */}
+        {/* Brand name - text only */}
         <div
           style={{
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 16,
             marginBottom: 20,
             opacity: logoOpacity,
             transform: `translateY(${logoY}px)`,
           }}
         >
-          {/* Logo mark */}
           <div
             style={{
-              position: "relative",
-              width: 64,
-              height: 64,
-              borderRadius: 14,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-              backgroundColor: BRAND.navy,
-              boxShadow: `0 16px 40px -10px ${BRAND.navy}60`,
+              fontSize: 32,
+              fontWeight: 500,
+              color: BRAND.slate,
+              letterSpacing: "-0.02em",
             }}
           >
-            {/* Shimmer effect */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                opacity: 0.3,
-                background: `linear-gradient(${45 + shimmerOffset * 0.3}deg,
-                  transparent 30%,
-                  rgba(255,255,255,0.6) 50%,
-                  transparent 70%)`,
-              }}
-            />
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+            AEO Engine
           </div>
-
-          <div style={{ textAlign: "left" }}>
-            <div
-              style={{
-                fontSize: 36,
-                fontWeight: 700,
-                color: BRAND.slate,
-                lineHeight: 1.1,
-              }}
-            >
-              AEO Engine
-            </div>
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: BRAND.grey,
-              }}
-            >
-              aeoengine.ai
-            </div>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 500,
+              color: BRAND.grey,
+              marginTop: 4,
+            }}
+          >
+            aeoengine.ai
           </div>
         </div>
 

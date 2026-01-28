@@ -8,7 +8,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="AEOEnginePromo"
         component={Master}
-        durationInFrames={540}
+        durationInFrames={660}
         fps={30}
         width={1280}
         height={720}
