@@ -16,7 +16,7 @@ interface Stat {
 const STATS: Stat[] = [
   { value: "60%", label: "of Google searches no longer click a link" },
   { value: "9x", label: "higher conversion rate from AI-driven traffic", source: "Forbes" },
-  { value: "920%", label: "average traffic growth across campaigns" },
+  { value: "920%", label: "Average AI Traffic Growth for AEO Engine Clients" },
   { value: "7x", label: "AI-driven traffic to stores", source: "TechCrunch" },
 ];
 
