@@ -50,7 +50,7 @@ export const AgentNetwork: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ opacity: networkOpacity }}>
-      <svg width={width} height={height} className="absolute inset-0">
+      <svg width={width} height={height} style={{ position: "absolute", inset: 0 }}>
         <defs>
           {/* Gradient for connections */}
           <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">

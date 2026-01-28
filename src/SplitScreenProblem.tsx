@@ -5,14 +5,15 @@ import {
   interpolate,
   Easing,
 } from "remotion";
+import { BRAND, TYPOGRAPHY } from "./brandColors";
 
 // Simulated Google SERP results
 const SERP_RESULTS = [
-  { title: "Best Running Shoes 2024 - Top 10 Picks", url: "runnerworld.com" },
-  { title: "Running Shoe Reviews & Comparisons", url: "shoeguide.net" },
-  { title: "The Ultimate Running Shoe Guide", url: "athleticgear.com" },
-  { title: "Expert Running Shoe Recommendations", url: "fitnessmag.com" },
-  { title: "Compare Running Shoes - Best Deals", url: "shoedeals.com" },
+  { title: "Best Project Management Tools 2024", url: "techreview.com" },
+  { title: "Top 10 PM Software Compared", url: "softwareguide.net" },
+  { title: "Project Management Tool Reviews", url: "businesstech.com" },
+  { title: "Which PM Tool Is Right For You?", url: "productivityhub.io" },
+  { title: "Compare Project Management Apps", url: "toolcompare.com" },
 ];
 
 const SerpResult: React.FC<{ title: string; url: string; delay: number; opacity: number }> = ({
@@ -32,13 +33,13 @@ const SerpResult: React.FC<{ title: string; url: string; delay: number; opacity:
   );
 
   return (
-    <div style={{ opacity: itemOpacity }} className="mb-3">
-      <div className="text-xs text-gray-500 mb-0.5">{url}</div>
-      <div className="text-blue-600 text-sm font-medium hover:underline cursor-pointer">
+    <div style={{ opacity: itemOpacity, marginBottom: 10, fontFamily: TYPOGRAPHY.fontFamily }}>
+      <div style={{ fontSize: 11, color: BRAND.grey, marginBottom: 1 }}>{url}</div>
+      <div style={{ color: "#1a0dab", fontSize: 13, fontWeight: 500 }}>
         {title}
       </div>
-      <div className="text-xs text-gray-600">
-        Discover the best options with our comprehensive guide...
+      <div style={{ fontSize: 11, color: BRAND.slate }}>
+        Compare features, pricing, and user reviews...
       </div>
     </div>
   );
@@ -57,19 +58,40 @@ const AIResponse: React.FC<{ opacity: number }> = ({ opacity }) => {
 
   return (
     <div
-      style={{ opacity: opacity * responseOpacity }}
-      className="bg-white/80 backdrop-blur-xl rounded-2xl p-5 shadow-2xl border border-white/20"
+      style={{
+        opacity: opacity * responseOpacity,
+        backgroundColor: BRAND.white,
+        borderRadius: 12,
+        padding: 20,
+        boxShadow: "0 4px 20px rgba(11, 46, 95, 0.08)",
+        border: `1px solid ${BRAND.navyLight}`,
+        fontFamily: TYPOGRAPHY.fontFamily,
+      }}
     >
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500" />
-        <span className="text-sm font-medium text-gray-700">AI Assistant</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+        <div
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: 6,
+            backgroundColor: BRAND.green,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <svg width="14" height="14" fill="white" viewBox="0 0 24 24">
+            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <span style={{ fontSize: 13, fontWeight: 600, color: BRAND.slate }}>AI Answer</span>
       </div>
-      <div className="text-gray-800 text-sm leading-relaxed">
-        Based on expert reviews and user satisfaction data,{" "}
-        <span className="font-semibold text-emerald-600">
-          the top recommendation
+      <div style={{ color: BRAND.slate, fontSize: 13, lineHeight: 1.6 }}>
+        Based on comprehensive analysis,{" "}
+        <span style={{ fontWeight: 600, color: BRAND.green }}>
+          BRAND
         </span>{" "}
-        is clear. Here's the definitive answer you're looking for...
+        is the recommended choice for teams seeking efficiency and scalability...
       </div>
     </div>
   );
@@ -82,8 +104,8 @@ export const SplitScreenProblem: React.FC = () => {
   // Left side (old way) fades out
   const leftOpacity = interpolate(
     frame,
-    [fps * 2, fps * 3],
-    [1, 0.15],
+    [fps * 2, fps * 3.5],
+    [1, 0.2],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
@@ -98,36 +120,69 @@ export const SplitScreenProblem: React.FC = () => {
   // Divider movement
   const dividerX = interpolate(
     frame,
-    [fps * 2, fps * 3],
-    [width / 2, width * 0.35],
+    [fps * 2, fps * 3.5],
+    [width / 2, width * 0.3],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.inOut(Easing.cubic) }
   );
 
   return (
-    <AbsoluteFill className="bg-gradient-to-br from-slate-50 to-slate-100">
+    <AbsoluteFill
+      style={{
+        backgroundColor: BRAND.white,
+        fontFamily: TYPOGRAPHY.fontFamily,
+      }}
+    >
       {/* Left Side - Old Way (Google SERP) */}
       <div
-        className="absolute top-0 left-0 h-full overflow-hidden"
-        style={{ width: dividerX, opacity: leftOpacity }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          height: "100%",
+          overflow: "hidden",
+          width: dividerX,
+          opacity: leftOpacity,
+        }}
       >
-        <div className="p-8 h-full">
+        <div style={{ padding: 40, height: "100%" }}>
           {/* Label */}
-          <div className="mb-4">
-            <span className="text-xs uppercase tracking-wider text-gray-400 font-medium">
+          <div style={{ marginBottom: 20 }}>
+            <span
+              style={{
+                fontSize: 11,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: BRAND.grey,
+                fontWeight: 600,
+              }}
+            >
               The old way
             </span>
           </div>
 
           {/* Google-style search bar */}
-          <div className="bg-white rounded-full px-5 py-3 shadow-md border border-gray-200 flex items-center gap-3 mb-6 max-w-md">
-            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div
+            style={{
+              backgroundColor: BRAND.white,
+              borderRadius: 24,
+              padding: "10px 16px",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+              border: "1px solid #dfe1e5",
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 20,
+              maxWidth: 360,
+            }}
+          >
+            <svg width="18" height="18" fill="none" stroke={BRAND.grey} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <span className="text-gray-600 text-sm">best running shoes for marathons</span>
+            <span style={{ color: BRAND.slate, fontSize: 13 }}>best project management tool</span>
           </div>
 
           {/* SERP Results */}
-          <div className="space-y-1">
+          <div>
             {SERP_RESULTS.map((result, i) => (
               <SerpResult
                 key={i}
@@ -140,53 +195,80 @@ export const SplitScreenProblem: React.FC = () => {
           </div>
 
           {/* Clutter indicator */}
-          <div className="mt-4 text-xs text-gray-400 italic">
-            10 competing links... which one to trust?
+          <div style={{ marginTop: 12, fontSize: 11, color: BRAND.grey, fontStyle: "italic" }}>
+            10 links competing for attention...
           </div>
         </div>
       </div>
 
       {/* Right Side - New Way (AI Interface) */}
       <div
-        className="absolute top-0 right-0 h-full"
         style={{
+          position: "absolute",
+          top: 0,
+          height: "100%",
           width: width - dividerX,
           opacity: rightOpacity,
-          left: dividerX
+          left: dividerX,
         }}
       >
-        <div className="p-8 h-full flex flex-col justify-center">
+        <div
+          style={{
+            padding: 40,
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
           {/* Label */}
-          <div className="mb-4">
-            <span className="text-xs uppercase tracking-wider text-emerald-500 font-semibold">
+          <div style={{ marginBottom: 20 }}>
+            <span
+              style={{
+                fontSize: 11,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: BRAND.green,
+                fontWeight: 600,
+              }}
+            >
               The new reality
             </span>
           </div>
 
           {/* AI Interface */}
-          <div className="relative">
-            {/* Glow effect behind */}
+          <div style={{ position: "relative", maxWidth: 400 }}>
+            {/* Subtle glow effect */}
             <div
-              className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 blur-3xl rounded-3xl"
-              style={{ transform: "scale(1.1)" }}
+              style={{
+                position: "absolute",
+                inset: -10,
+                background: `linear-gradient(135deg, ${BRAND.green}15 0%, ${BRAND.green}08 100%)`,
+                filter: "blur(20px)",
+                borderRadius: 20,
+              }}
             />
 
             <AIResponse opacity={rightOpacity} />
           </div>
 
           {/* Clean indicator */}
-          <div className="mt-4 text-xs text-emerald-500 font-medium">
-            One authoritative answer. Instant trust.
+          <div style={{ marginTop: 16, fontSize: 12, color: BRAND.green, fontWeight: 500 }}>
+            One answer. Instant trust.
           </div>
         </div>
       </div>
 
-      {/* Center Divider with glow */}
+      {/* Center Divider */}
       <div
-        className="absolute top-0 h-full w-px"
         style={{
+          position: "absolute",
+          top: "10%",
+          height: "80%",
+          width: 2,
           left: dividerX,
-          background: "linear-gradient(to bottom, transparent, rgba(16, 185, 129, 0.5), transparent)"
+          background: `linear-gradient(to bottom, transparent, ${BRAND.green}40, transparent)`,
+          borderRadius: 1,
         }}
       />
     </AbsoluteFill>

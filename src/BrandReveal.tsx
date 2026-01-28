@@ -4,8 +4,8 @@ import {
   useVideoConfig,
   interpolate,
   spring,
-  Easing,
 } from "remotion";
+import { BRAND, TYPOGRAPHY } from "./brandColors";
 
 const PLATFORMS = [
   { name: "Google", color: "#4285f4" },
@@ -33,7 +33,7 @@ export const BrandReveal: React.FC = () => {
   });
 
   // Logo animation
-  const logoDelay = fps * 0.4;
+  const logoDelay = fps * 0.3;
   const logoSpring = spring({
     frame: frame - logoDelay,
     fps,
@@ -49,7 +49,7 @@ export const BrandReveal: React.FC = () => {
   );
 
   // Tagline animation
-  const taglineDelay = fps * 0.8;
+  const taglineDelay = fps * 0.6;
   const taglineOpacity = interpolate(
     frame,
     [taglineDelay, taglineDelay + fps * 0.4],
@@ -57,11 +57,8 @@ export const BrandReveal: React.FC = () => {
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  // Platform badges slide up
-  const badgesDelay = fps * 1.2;
-
   // CTA animation
-  const ctaDelay = fps * 1.8;
+  const ctaDelay = fps * 0.9;
   const ctaOpacity = interpolate(
     frame,
     [ctaDelay, ctaDelay + fps * 0.3],
@@ -69,127 +66,160 @@ export const BrandReveal: React.FC = () => {
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  // Holographic shimmer effect for logo
-  const shimmerOffset = (frame / fps) * 200;
+  // Subtle shimmer effect
+  const shimmerOffset = (frame / fps) * 100;
 
   return (
-    <AbsoluteFill className="flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      {/* Subtle background pattern */}
+    <AbsoluteFill
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: BRAND.white,
+        fontFamily: TYPOGRAPHY.fontFamily,
+      }}
+    >
+      {/* Subtle background gradient */}
       <div
-        className="absolute inset-0 opacity-5"
         style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, #667eea 1px, transparent 1px),
-                           radial-gradient(circle at 75% 75%, #764ba2 1px, transparent 1px)`,
-          backgroundSize: "50px 50px",
+          position: "absolute",
+          inset: 0,
+          background: `radial-gradient(ellipse at 50% 30%, ${BRAND.greenLight} 0%, transparent 50%),
+                       radial-gradient(ellipse at 50% 70%, ${BRAND.navyLight} 0%, transparent 40%)`,
         }}
       />
 
       {/* Main content */}
-      <div className="relative z-10 text-center">
+      <div style={{ position: "relative", zIndex: 10, textAlign: "center" }}>
         {/* Headline */}
         <div
           style={{
             opacity: headlineOpacity,
             transform: `scale(${headlineScale})`,
+            marginBottom: 28,
           }}
-          className="mb-8"
         >
           <h1
-            className="font-black tracking-tight"
             style={{
-              fontSize: 72,
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%)",
-              backgroundSize: "200% 200%",
-              backgroundPosition: `${shimmerOffset}% 0%`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              fontFamily: "system-ui, -apple-system, sans-serif",
+              fontSize: 56,
+              fontWeight: 800,
+              letterSpacing: "-0.02em",
+              color: BRAND.slate,
+              margin: 0,
+              lineHeight: 1.1,
             }}
           >
-            Own the AI Answer.
+            Own the{" "}
+            <span
+              style={{
+                color: BRAND.green,
+              }}
+            >
+              AI Answer
+            </span>
           </h1>
         </div>
 
         {/* Logo and brand name */}
         <div
-          className="flex items-center justify-center gap-5 mb-6"
           style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 16,
+            marginBottom: 20,
             opacity: logoOpacity,
             transform: `translateY(${logoY}px)`,
           }}
         >
-          {/* Logo mark with holographic effect */}
+          {/* Logo mark */}
           <div
-            className="relative w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              boxShadow: "0 20px 40px -10px rgba(102, 126, 234, 0.5)",
+              position: "relative",
+              width: 64,
+              height: 64,
+              borderRadius: 14,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              backgroundColor: BRAND.navy,
+              boxShadow: `0 16px 40px -10px ${BRAND.navy}60`,
             }}
           >
-            {/* Holographic shimmer */}
+            {/* Shimmer effect */}
             <div
-              className="absolute inset-0 opacity-40"
               style={{
-                background: `linear-gradient(${45 + shimmerOffset * 0.5}deg,
+                position: "absolute",
+                inset: 0,
+                opacity: 0.3,
+                background: `linear-gradient(${45 + shimmerOffset * 0.3}deg,
                   transparent 30%,
-                  rgba(255,255,255,0.8) 50%,
+                  rgba(255,255,255,0.6) 50%,
                   transparent 70%)`,
               }}
             />
-            <span className="text-white text-4xl font-bold relative z-10">A</span>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
           </div>
 
-          <div className="text-left">
+          <div style={{ textAlign: "left" }}>
             <div
-              className="font-bold text-gray-900"
               style={{
-                fontSize: 42,
-                fontFamily: "system-ui, -apple-system, sans-serif",
+                fontSize: 36,
+                fontWeight: 700,
+                color: BRAND.slate,
+                lineHeight: 1.1,
               }}
             >
-              AEOEngine
+              AEO Engine
             </div>
             <div
-              className="text-gray-500 font-medium"
               style={{
-                fontSize: 16,
-                fontFamily: "system-ui, -apple-system, sans-serif",
+                fontSize: 14,
+                fontWeight: 500,
+                color: BRAND.grey,
               }}
             >
-              .ai
+              aeoengine.ai
             </div>
           </div>
         </div>
 
         {/* Tagline */}
-        <div
-          className="mb-8"
-          style={{ opacity: taglineOpacity }}
-        >
+        <div style={{ marginBottom: 28, opacity: taglineOpacity }}>
           <p
-            className="text-xl text-gray-600"
-            style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+            style={{
+              fontSize: 18,
+              color: BRAND.grey,
+              margin: 0,
+              lineHeight: 1.5,
+            }}
           >
-            AI-Powered SEO That Makes You the{" "}
-            <span className="font-semibold text-gray-800">Trusted Source</span>
+            Rank on Google.{" "}
+            <span style={{ fontWeight: 600, color: BRAND.slate }}>
+              Get recommended by AI.
+            </span>
           </p>
         </div>
 
-        {/* Platform badges */}
-        <div className="flex items-center justify-center gap-3 mb-10">
+        {/* Platform badges - compact row */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            marginBottom: 32,
+          }}
+        >
           {PLATFORMS.map((platform, i) => {
-            const badgeDelay = badgesDelay + i * 4;
-            const badgeSpring = spring({
-              frame: frame - badgeDelay,
-              fps,
-              config: { damping: 20, stiffness: 150 },
-            });
-
-            const badgeY = interpolate(badgeSpring, [0, 1], [30, 0]);
+            const badgeDelay = fps * 0.5 + i * 3;
             const badgeOpacity = interpolate(
               frame,
-              [badgeDelay, badgeDelay + fps * 0.2],
+              [badgeDelay, badgeDelay + fps * 0.15],
               [0, 1],
               { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
             );
@@ -197,13 +227,15 @@ export const BrandReveal: React.FC = () => {
             return (
               <div
                 key={i}
-                className="px-4 py-2 rounded-full text-sm font-medium"
                 style={{
+                  padding: "6px 12px",
+                  borderRadius: 16,
+                  fontSize: 11,
+                  fontWeight: 500,
                   opacity: badgeOpacity,
-                  transform: `translateY(${badgeY}px)`,
-                  backgroundColor: `${platform.color}15`,
+                  backgroundColor: `${platform.color}12`,
                   color: platform.color,
-                  border: `1px solid ${platform.color}30`,
+                  border: `1px solid ${platform.color}25`,
                 }}
               >
                 {platform.name}
@@ -213,41 +245,32 @@ export const BrandReveal: React.FC = () => {
         </div>
 
         {/* CTA Section */}
-        <div
-          className="space-y-4"
-          style={{ opacity: ctaOpacity }}
-        >
-          {/* URL */}
-          <div>
-            <span
-              className="text-2xl font-semibold"
-              style={{
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              aeoengine.ai
-            </span>
-          </div>
-
-          {/* CTA Button */}
-          <div className="inline-flex items-center gap-2">
-            <div
-              className="px-6 py-3 rounded-full text-white font-semibold text-lg shadow-lg"
-              style={{
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                boxShadow: "0 10px 30px -5px rgba(102, 126, 234, 0.5)",
-              }}
-            >
-              Book Your Free Audit
-            </div>
+        <div style={{ opacity: ctaOpacity }}>
+          {/* CTA Button - Navy for action */}
+          <div
+            style={{
+              display: "inline-flex",
+              padding: "14px 32px",
+              borderRadius: 9999,
+              color: BRAND.white,
+              fontWeight: 600,
+              fontSize: 16,
+              backgroundColor: BRAND.navy,
+              boxShadow: `0 12px 30px -5px ${BRAND.navy}40`,
+            }}
+          >
+            Book Your Free Audit →
           </div>
 
           {/* Trust signal */}
-          <div className="text-sm text-gray-400 mt-4">
-            Trusted by 50+ leading brands
+          <div
+            style={{
+              fontSize: 12,
+              color: BRAND.grey,
+              marginTop: 14,
+            }}
+          >
+            Join 50+ brands owning the AI answer
           </div>
         </div>
       </div>

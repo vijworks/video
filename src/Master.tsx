@@ -6,15 +6,18 @@ import {
   interpolate,
 } from "remotion";
 import { SplitScreenProblem } from "./SplitScreenProblem";
-import { KineticStat } from "./KineticStat";
-import { AgentNetwork } from "./AgentNetwork";
-import { AIInterface } from "./AIInterface";
+import { StatsShowcase } from "./StatsShowcase";
+import { NotificationsStack } from "./NotificationsStack";
+import { DashboardReveal } from "./DashboardReveal";
 import { BrandReveal } from "./BrandReveal";
+import { BRAND } from "./brandColors";
 
-// Timing constants (in seconds)
-const ACT1_DURATION = 3.5;
-const ACT2_DURATION = 3.5;
-const ACT3_DURATION = 3;
+// Timing constants (in seconds) - Total: 18 seconds
+const ACT1_DURATION = 4;      // The Shift: Split screen old vs new
+const ACT2_DURATION = 5;      // The Stats: All 4 stats showcase
+const ACT3_DURATION = 5;      // Platform in Action: Notifications
+const ACT4_DURATION = 3;      // Dashboard Reveal
+const ACT5_DURATION = 1;      // Brand & CTA (starts early with overlap)
 
 export const Master: React.FC = () => {
   const frame = useCurrentFrame();
@@ -24,62 +27,117 @@ export const Master: React.FC = () => {
   const act1Frames = Math.round(ACT1_DURATION * fps);
   const act2Frames = Math.round(ACT2_DURATION * fps);
   const act3Frames = Math.round(ACT3_DURATION * fps);
+  const act4Frames = Math.round(ACT4_DURATION * fps);
+  const act5Frames = Math.round(ACT5_DURATION * fps);
 
   const act2Start = act1Frames;
-  const act3Start = act1Frames + act2Frames;
+  const act3Start = act2Start + act2Frames;
+  const act4Start = act3Start + act3Frames;
+  const act5Start = act4Start + act4Frames;
 
   // Transition overlays for smooth act changes
-  const act1ToAct2Fade = interpolate(
-    frame,
-    [act1Frames - fps * 0.3, act1Frames],
-    [0, 1],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
-
-  const act2ToAct3Fade = interpolate(
-    frame,
-    [act3Start - fps * 0.3, act3Start],
-    [0, 1],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
+  const transitionDuration = fps * 0.4;
 
   return (
-    <AbsoluteFill className="bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* ACT 1: The Problem (0-3.5s) */}
-      <Sequence durationInFrames={act1Frames + Math.round(fps * 0.5)}>
-        <AbsoluteFill style={{ opacity: 1 - act1ToAct2Fade * 0.8 }}>
-          <SplitScreenProblem />
-          <KineticStat />
-        </AbsoluteFill>
-      </Sequence>
-
-      {/* ACT 2: The Transformation (3.5-7s) */}
-      <Sequence from={act2Start - Math.round(fps * 0.2)} durationInFrames={act2Frames + Math.round(fps * 0.5)}>
+    <AbsoluteFill style={{ backgroundColor: BRAND.white }}>
+      {/* ACT 1: The Shift (0-4s) - Split screen old vs new */}
+      <Sequence durationInFrames={act1Frames + Math.round(transitionDuration)}>
         <AbsoluteFill
           style={{
             opacity: interpolate(
               frame,
-              [act2Start - fps * 0.2, act2Start + fps * 0.3],
-              [0, 1],
+              [act1Frames - transitionDuration, act1Frames],
+              [1, 0],
               { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-            ) * (1 - act2ToAct3Fade * 0.8),
+            ),
           }}
         >
-          {/* Background: Agent Network */}
-          <AgentNetwork />
-
-          {/* Foreground: AI Chat Interface */}
-          <AIInterface />
+          <SplitScreenProblem />
         </AbsoluteFill>
       </Sequence>
 
-      {/* ACT 3: The Payoff (7-10s) */}
-      <Sequence from={act3Start - Math.round(fps * 0.2)} durationInFrames={act3Frames + Math.round(fps * 0.5)}>
+      {/* ACT 2: The Stats (4-9s) - All 4 stats showcase */}
+      <Sequence
+        from={act2Start - Math.round(transitionDuration * 0.5)}
+        durationInFrames={act2Frames + Math.round(transitionDuration)}
+      >
         <AbsoluteFill
           style={{
             opacity: interpolate(
               frame,
-              [act3Start - fps * 0.2, act3Start + fps * 0.3],
+              [
+                act2Start - transitionDuration * 0.5,
+                act2Start + transitionDuration * 0.5,
+                act3Start - transitionDuration,
+                act3Start,
+              ],
+              [0, 1, 1, 0],
+              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+            ),
+          }}
+        >
+          <StatsShowcase />
+        </AbsoluteFill>
+      </Sequence>
+
+      {/* ACT 3: Platform in Action (9-14s) - Notifications */}
+      <Sequence
+        from={act3Start - Math.round(transitionDuration * 0.5)}
+        durationInFrames={act3Frames + Math.round(transitionDuration)}
+      >
+        <AbsoluteFill
+          style={{
+            opacity: interpolate(
+              frame,
+              [
+                act3Start - transitionDuration * 0.5,
+                act3Start + transitionDuration * 0.5,
+                act4Start - transitionDuration,
+                act4Start,
+              ],
+              [0, 1, 1, 0],
+              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+            ),
+          }}
+        >
+          <NotificationsStack />
+        </AbsoluteFill>
+      </Sequence>
+
+      {/* ACT 4: Dashboard Reveal (14-17s) */}
+      <Sequence
+        from={act4Start - Math.round(transitionDuration * 0.5)}
+        durationInFrames={act4Frames + Math.round(transitionDuration)}
+      >
+        <AbsoluteFill
+          style={{
+            opacity: interpolate(
+              frame,
+              [
+                act4Start - transitionDuration * 0.5,
+                act4Start + transitionDuration * 0.5,
+                act5Start - transitionDuration,
+                act5Start,
+              ],
+              [0, 1, 1, 0],
+              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+            ),
+          }}
+        >
+          <DashboardReveal />
+        </AbsoluteFill>
+      </Sequence>
+
+      {/* ACT 5: Brand & CTA (17-18s) */}
+      <Sequence
+        from={act5Start - Math.round(transitionDuration * 0.5)}
+        durationInFrames={act5Frames + Math.round(transitionDuration)}
+      >
+        <AbsoluteFill
+          style={{
+            opacity: interpolate(
+              frame,
+              [act5Start - transitionDuration * 0.5, act5Start + transitionDuration * 0.3],
               [0, 1],
               { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
             ),
