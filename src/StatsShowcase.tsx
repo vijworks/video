@@ -209,7 +209,7 @@ export const StatsShowcase: React.FC = () => {
               marginBottom: 8,
             }}
           >
-            The AI Revolution is Here
+            AI Is Disrupting How People Search
           </h2>
           <p
             style={{
